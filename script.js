@@ -1,659 +1,497 @@
-const missions = [
+const PORTFOLIO_URL = "https://new.express.adobe.com/webpage/x9sDwoekJyT6A";
+const PORTFOLIO_ANCHORS = {
+  digitalWelcome: "aa2465de-e013-4c4d-b4b3-fe350175dd21",
+  immersive360: "9a4cf7b9-c683-4615-85b7-ab6cb7d30f76",
+  immersiveVideo: "ba00af02-f6d5-49aa-b685-e598641c48a0",
+  visualCampaign: "302ad0ad-c910-4e7f-bc64-7b5dc43bbf4d",
+  personalBranding: "26f36e7f-1ae2-48f2-8432-0d665fa9312f"
+};
+
+const pillars = [
   {
-    year: "2006-2012",
-    title: "Story Foundations",
-    company: "A Gypsy Life Productions + GA Copywriting",
-    role: "Marketing Coordinator + Copywriting",
-    brief: "Early career foundation in storytelling, campaign writing, and turning creative briefs into audience-ready messaging.",
-    approaches: [
-      { label: "Narrative Precision", bonus: 12 },
-      { label: "Audience Clarity", bonus: 10 }
+    id: "brand-strategy",
+    token: "Strategy Token",
+    title: "Brand & Campaign Strategy",
+    timeline: "PepsiCo | Arkema ArrMaz | True",
+    summary:
+      "Led and supported campaign strategy across internal marketing, role-transition environments, and manager-level planning.",
+    roles: [
+      "PepsiCo (2012-2019): collaborated on campaign concepting, trend research, and brand consistency support.",
+      "Arkema ArrMaz (2019-2022): transitioned from marketing support into executive-level operational communications during COVID disruptions.",
+      "True (2023-2024): owned execution priorities as Marketing Manager, balancing delivery speed with strategic alignment."
     ],
-    challengeType: "sequence",
-    challengePrompt: "Replay the core communication sequence that powers campaign clarity.",
-    sequenceLength: 3,
-    badge: "Story Foundations"
+    impact: [
+      "Built cross-functional campaign discipline and consistency across multiple organizational contexts.",
+      "Demonstrated adaptability under pressure while maintaining communication quality.",
+      "Translated strategy into execution plans tied to business outcomes and stakeholder needs."
+    ],
+    fit: [
+      "Supports integrated campaign planning across print/digital-style channels and formats.",
+      "Strong cross-team coordination for campaign execution with stakeholders under deadline pressure.",
+      "Transferable execution discipline for proposal development, launch readiness, and follow-through."
+    ],
+    proof: {
+      label: "Open Strategy Portfolio Proof",
+      hint: "Suggested review focus: campaign planning, cross-functional execution, and delivery alignment.",
+      url: `${PORTFOLIO_URL}#${PORTFOLIO_ANCHORS.visualCampaign}`
+    },
+    decision: {
+      prompt: "If this campaign had a tight deadline, what should be prioritized first?",
+      options: ["Execution speed with aligned messaging", "More channels before alignment"],
+      recommendedIndex: 0,
+      deedraApproach: "Execution speed with alignment.",
+      outcome:
+        "Deedra has repeatedly balanced speed and consistency, which reduces rework and strengthens stakeholder confidence."
+    }
   },
   {
-    year: "2015",
-    title: "Author Gate",
-    company: "Published Book Milestone",
-    role: "Published Author",
-    brief: "Demonstrated long-form storytelling discipline and the ability to ship meaningful creative work.",
-    approaches: [
-      { label: "Voice & Depth", bonus: 14 },
-      { label: "Audience Pull", bonus: 10 }
+    id: "pr-communications",
+    token: "Comms Token",
+    title: "PR & Communications",
+    timeline: "MIDFLORIDA Credit Union | Arkema ArrMaz",
+    summary:
+      "Built public-facing and internal communications that align brand narrative, organizational priorities, and audience engagement.",
+    roles: [
+      "MIDFLORIDA (2024-Present): develops media-ready messaging, PR strategy narratives, and audience-facing communication assets.",
+      "Arkema ArrMaz (2019-2022): supported internal/external executive communication and coordination across leadership channels."
     ],
-    challengeType: "storyAssembly",
-    challengePrompt: "Assemble the publishing narrative in the correct storytelling arc.",
-    storySequence: [
-      "Audience insight identified",
-      "Long-form narrative drafted",
-      "Book launched to market"
+    impact: [
+      "Improved message clarity between leadership goals and public-facing communication.",
+      "Strengthened consistency in voice across presentations, outreach, and communications collateral.",
+      "Supported trust-building communication through high-accountability operational periods."
     ],
-    badge: "Author Gate"
+    fit: [
+      "Directly relevant to clear client/stakeholder communication and expectation management.",
+      "Strengthens message consistency across external marketing touchpoints and internal teams.",
+      "Supports retention-oriented communication through consistent, relationship-focused updates."
+    ],
+    proof: {
+      label: "Open PR Portfolio Proof",
+      hint: "Suggested review focus: messaging clarity, audience communication, and stakeholder narrative consistency.",
+      url: `${PORTFOLIO_URL}#${PORTFOLIO_ANCHORS.digitalWelcome}`
+    },
+    decision: {
+      prompt: "For relationship-driven media clients, which communication pattern works best?",
+      options: ["Consistent updates with clear context", "Ad hoc updates only when asked"],
+      recommendedIndex: 0,
+      deedraApproach: "Consistent updates with clear context.",
+      outcome:
+        "Her communication style supports stronger alignment, fewer surprises, and better long-term stakeholder trust."
+    }
   },
   {
-    year: "2012-2024",
-    title: "Campaign Scale",
-    company: "PepsiCo + Arkema ArrMaz + True",
-    role: "Internal Marketing, Role Pivot, Marketing Manager",
-    brief: "Scaled from internal campaign support to leadership-level execution, adapting through role shifts and high-pressure business needs.",
-    approaches: [
-      { label: "Execution Under Pressure", bonus: 13 },
-      { label: "Cross-Team Strategy", bonus: 11 }
+    id: "content-storytelling",
+    token: "Story Token",
+    title: "Content & Storytelling",
+    timeline: "A Gypsy Life Productions | GA Copywriting | 2015 Book",
+    summary:
+      "Developed storytelling capabilities across production, copywriting, and long-form publishing to drive audience connection.",
+    roles: [
+      "A Gypsy Life Productions (2006-2010): supported scripts, storyboards, and creative execution workflows.",
+      "GA Copywriting (2010-2012): wrote campaign and promotional copy under deadline with brief alignment.",
+      "Published Author (2015): completed and released a book, demonstrating sustained narrative discipline and content ownership."
     ],
-    challengeType: "triage",
-    challengePrompt: "Prioritize the top strategic levers that drive campaign outcomes.",
-    targets: ["Brand Consistency", "Execution Speed", "Cross-Team Alignment"],
-    pickCount: 2,
-    timeLimit: 10,
-    badge: "Campaign Scale"
+    impact: [
+      "Built a strong foundation in structured messaging for different audiences and contexts.",
+      "Proved long-form communication endurance and editorial process management.",
+      "Consistently translated ideas into clear, audience-relevant stories."
+    ],
+    fit: [
+      "Supports audience-first messaging used in multi-platform campaign recommendations.",
+      "Improves proposal and presentation quality through concise, persuasive narrative framing.",
+      "Brings editorial rigor to campaign copy, content structure, and communication clarity."
+    ],
+    proof: {
+      label: "Open Storytelling Portfolio Proof",
+      hint: "Suggested review focus: narrative framing, copy clarity, and long-form communication range.",
+      url: `${PORTFOLIO_URL}#${PORTFOLIO_ANCHORS.personalBranding}`
+    },
+    decision: {
+      prompt: "When presenting campaign concepts, what increases decision-maker buy-in?",
+      options: ["Clear narrative framing + business context", "Feature-heavy details with minimal framing"],
+      recommendedIndex: 0,
+      deedraApproach: "Clear narrative framing + business context.",
+      outcome:
+        "Her storytelling background makes campaign recommendations easier to understand, evaluate, and approve."
+    }
   },
   {
-    year: "2024+",
-    title: "Innovation Impact",
-    company: "MIDFLORIDA + IFF Citrus Innovation Center",
-    role: "Marketing Specialist II + Marketing Lead",
-    brief: "Current work blends PR strategy, immersive experiences, and innovation storytelling that translates complex ideas for real audiences.",
-    approaches: [
-      { label: "PR Signal", bonus: 13 },
-      { label: "Experience Design", bonus: 12 }
+    id: "innovation-experience",
+    token: "Innovation Token",
+    title: "Innovation & Experience Design",
+    timeline: "MIDFLORIDA Credit Union | IFF Citrus Innovation Center",
+    summary:
+      "Connects innovation-heavy environments with accessible audience messaging through immersive and strategic campaign touchpoints.",
+    roles: [
+      "MIDFLORIDA (2024-Present): creates immersive experiences and marketing narratives, including Igloo-supported engagement assets.",
+      "IFF Citrus Innovation Center (Marketing Lead): translates technical innovation and product context into market-facing stories."
     ],
-    challengeType: "timing",
-    challengePrompt: "Hit precision timing windows to convert complexity into clear market value.",
-    targetHits: 2,
-    maxMisses: 1,
-    badge: "Innovation Impact"
+    impact: [
+      "Improved accessibility of complex concepts for non-technical audiences.",
+      "Combined strategic communication and experience design to strengthen engagement quality.",
+      "Positioned innovation storytelling as a practical growth and brand lever."
+    ],
+    fit: [
+      "Useful for positioning complex advertising and marketing solutions in clear business language.",
+      "Supports value-based consultative conversations with decision-makers and partners.",
+      "Adds differentiated experience design thinking to campaign strategy and client-facing recommendations."
+    ],
+    proof: {
+      label: "Open Innovation Portfolio Proof",
+      hint: "Suggested review focus: immersive engagement, innovation translation, and audience value positioning.",
+      url: `${PORTFOLIO_URL}#${PORTFOLIO_ANCHORS.immersive360}`
+    },
+    decision: {
+      prompt: "For innovation-focused campaigns, what drives stronger audience response?",
+      options: ["Translate complexity into practical value", "Lead with technical depth only"],
+      recommendedIndex: 0,
+      deedraApproach: "Translate complexity into practical value.",
+      outcome:
+        "Deedra's innovation storytelling helps audiences quickly understand relevance, utility, and business impact."
+    }
   }
 ];
 
+const pillarMap = document.getElementById("pillarMap");
+const detailPanel = document.getElementById("detailPanel");
+const mapStatus = document.getElementById("mapStatus");
+const progressText = document.getElementById("progressText");
+const progressBar = document.getElementById("progressBar");
+const tokenTray = document.getElementById("tokenTray");
+const unlockText = document.getElementById("unlockText");
+const finalCta = document.getElementById("finalCta");
+const startGuided = document.getElementById("startGuided");
+const stopGuided = document.getElementById("stopGuided");
+const guidedStatus = document.getElementById("guidedStatus");
+const toggleQuickMode = document.getElementById("toggleQuickMode");
+const fitScoreText = document.getElementById("fitScoreText");
+const fitBar = document.getElementById("fitBar");
+
 const state = {
-  started: false,
-  unlockedIndex: -1,
-  activeMissionIndex: null,
-  completed: new Set(),
-  influence: 0,
-  energy: 3,
-  badges: []
+  activeIndex: 0,
+  reviewed: new Set(),
+  tokens: new Set(),
+  decisions: {},
+  guidedActive: false,
+  guidedTimer: null,
+  guidedStepper: null,
+  guidedSecondsLeft: 0,
+  quickMode: false,
+  displayedFitScore: 0
 };
 
-const startBtn = document.getElementById("startQuest");
-const resetBtn = document.getElementById("resetQuest");
-const questMap = document.getElementById("questMap");
-const missionPanel = document.getElementById("missionPanel");
-const mapStatus = document.getElementById("mapStatus");
-const energyStat = document.getElementById("energyStat");
-const influenceStat = document.getElementById("influenceStat");
-const badgeStat = document.getElementById("badgeStat");
-const badgeTray = document.getElementById("badgeTray");
-const badgeList = document.getElementById("badgeList");
-const finalVault = document.getElementById("finalVault");
+function computeFitScore() {
+  const reviewedScore = (state.reviewed.size / pillars.length) * 70;
 
-let activeCleanup = null;
+  let decisionScore = 0;
+  pillars.forEach((pillar) => {
+    const choice = state.decisions[pillar.id];
+    if (choice !== undefined) {
+      decisionScore += 3;
+      if (choice === pillar.decision.recommendedIndex) {
+        decisionScore += 4.5;
+      }
+    }
+  });
 
-function updateHud() {
-  energyStat.textContent = String(state.energy);
-  influenceStat.textContent = String(state.influence);
-  badgeStat.textContent = `${state.badges.length} / ${missions.length}`;
-
-  if (state.badges.length > 0) {
-    badgeTray.classList.remove("hidden");
-    badgeList.innerHTML = state.badges.map((badge) => `<span class="badge">${badge}</span>`).join("");
-  } else {
-    badgeTray.classList.add("hidden");
-  }
+  return Math.round(Math.min(100, reviewedScore + decisionScore));
 }
 
-function renderMap() {
-  questMap.innerHTML = missions
-    .map((mission, index) => {
-      const locked = !state.started || index > state.unlockedIndex;
-      const done = state.completed.has(index);
-      const active = state.activeMissionIndex === index;
+function animateFitScore(target) {
+  const start = state.displayedFitScore;
+  const diff = target - start;
+  const steps = 18;
+  let tick = 0;
+
+  const interval = setInterval(() => {
+    tick += 1;
+    const value = Math.round(start + (diff * tick) / steps);
+    state.displayedFitScore = value;
+    fitScoreText.textContent = `Role Fit Score: ${value} / 100`;
+    fitBar.style.width = `${value}%`;
+    fitBar.parentElement.setAttribute("aria-valuenow", String(value));
+
+    if (tick >= steps) {
+      clearInterval(interval);
+      state.displayedFitScore = target;
+      fitScoreText.textContent = `Role Fit Score: ${target} / 100`;
+      fitBar.style.width = `${target}%`;
+      fitBar.parentElement.setAttribute("aria-valuenow", String(target));
+    }
+  }, 16);
+}
+
+function renderPillars() {
+  pillarMap.innerHTML = pillars
+    .map((pillar, index) => {
+      const reviewed = state.reviewed.has(index);
       return `
-        <button
-          class="node ${locked ? "locked" : ""} ${done ? "done" : ""} ${active ? "active" : ""}"
-          type="button"
-          data-index="${index}"
-          ${locked ? "disabled" : ""}
-        >
-          <p class="node-year">${mission.year}</p>
-          <p class="node-title">${mission.title}</p>
-          <p class="node-company">${mission.company}</p>
+        <button class="pillar-card ${index === state.activeIndex ? "active" : ""} ${reviewed ? "reviewed" : ""}" type="button" data-index="${index}">
+          <p class="pillar-label">Pillar ${index + 1}</p>
+          <h3>${pillar.title}</h3>
+          <p class="pillar-timeline">${pillar.timeline}</p>
+          <p class="pillar-review">${reviewed ? "Insight Token Unlocked" : "Not reviewed yet"}</p>
         </button>
       `;
     })
     .join("");
 
-  questMap.querySelectorAll(".node").forEach((node) => {
-    node.addEventListener("click", () => {
-      const index = Number(node.dataset.index);
-      if (index > state.unlockedIndex) {
-        return;
-      }
-      openMission(index);
+  pillarMap.querySelectorAll(".pillar-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      state.activeIndex = Number(card.dataset.index);
+      renderPillars();
+      renderDetails(state.activeIndex);
     });
   });
 }
 
-function openMission(index) {
-  if (activeCleanup) {
-    activeCleanup();
+function setProgressUI() {
+  const reviewedCount = state.reviewed.size;
+  progressText.textContent = `Pillar Progress: ${reviewedCount} / ${pillars.length} reviewed`;
+  progressBar.style.width = `${(reviewedCount / pillars.length) * 100}%`;
+  progressBar.parentElement.setAttribute("aria-valuenow", String(reviewedCount));
+
+  unlockText.textContent = reviewedCount === pillars.length ? "Full Candidate Brief: Unlocked" : "Full Candidate Brief: Locked";
+
+  tokenTray.innerHTML = pillars
+    .map((pillar, index) => {
+      const unlocked = state.tokens.has(index);
+      return `<span class="token ${unlocked ? "unlocked pop-in" : "locked"}">${unlocked ? "Unlocked" : "Locked"}: ${pillar.token}</span>`;
+    })
+    .join("");
+
+  if (reviewedCount === pillars.length) {
+    finalCta.classList.remove("hidden");
+    finalCta.classList.add("fade-in");
   }
 
-  state.activeMissionIndex = index;
-  const mission = missions[index];
-  let selectedApproach = null;
-  let resolved = false;
-  const disposers = [];
+  animateFitScore(computeFitScore());
+}
 
-  missionPanel.classList.remove("hidden");
-  missionPanel.innerHTML = `
-    <h3>${mission.title}</h3>
-    <p class="mission-meta">${mission.year} | ${mission.role} | ${mission.company}</p>
-    <p class="mission-brief">${mission.brief}</p>
-    <div class="hero-actions">
-      <a class="btn btn-ghost" href="https://new.express.adobe.com/webpage/x9sDwoekJyT6A" target="_blank" rel="noreferrer">View Proof in Portfolio</a>
+function markReviewed(index) {
+  state.reviewed.add(index);
+  state.tokens.add(index);
+  setProgressUI();
+}
+
+function renderDecisionBlock(pillar) {
+  const selected = state.decisions[pillar.id];
+
+  if (selected === undefined) {
+    return `
+      <article class="detail-block decision-block fade-in">
+        <h3>Quick Strategy Call</h3>
+        <p>${pillar.decision.prompt}</p>
+        <div class="decision-options">
+          ${pillar.decision.options
+            .map((option, idx) => `<button class="decision-btn" type="button" data-decision="${idx}">${option}</button>`)
+            .join("")}
+        </div>
+      </article>
+    `;
+  }
+
+  const matchClass = selected === pillar.decision.recommendedIndex ? "decision-good" : "decision-neutral";
+  return `
+    <article class="detail-block decision-block ${matchClass} fade-in">
+      <h3>Quick Strategy Call</h3>
+      <p><strong>Your Choice:</strong> ${pillar.decision.options[selected]}</p>
+      <p><strong>Deedra's Approach:</strong> ${pillar.decision.deedraApproach}</p>
+      <p><strong>Outcome:</strong> ${pillar.decision.outcome}</p>
+    </article>
+  `;
+}
+
+function renderQuickView(pillar, nextIndex) {
+  return `
+    <div class="detail-head fade-in">
+      <p class="detail-pill">${pillar.timeline}</p>
+      <h2>${pillar.title}</h2>
+      <p class="detail-summary">${pillar.summary}</p>
+      <p class="quick-tag">30s Recruiter Mode: condensed summary + role fit only.</p>
     </div>
 
-    <div class="approach-grid" id="approachGrid">
-      ${mission.approaches
-        .map(
-          (approach, approachIndex) =>
-            `<button class="approach-btn" data-approach="${approachIndex}" type="button">${approach.label}</button>`
-        )
-        .join("")}
+    <div class="detail-grid quick-grid">
+      <article class="detail-block fade-in">
+        <h3>Role Fit For Marketing Media Executive</h3>
+        <ul>
+          ${pillar.fit.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </article>
+
+      <article class="detail-block proof-block fade-in">
+        <h3>Proof Touchpoint</h3>
+        <p>${pillar.proof.hint}</p>
+        <a class="btn btn-primary" href="${pillar.proof.url}" target="_blank" rel="noreferrer">${pillar.proof.label}</a>
+      </article>
     </div>
 
-    <div class="challenge-zone">
-      <p class="challenge-note">${mission.challengePrompt || "Choose your strategy approach, then run the mission challenge."}</p>
-      <button class="btn btn-primary" id="startChallenge" type="button" disabled>Start Challenge</button>
-      <div id="challengeMount" class="challenge-mount"></div>
-      <p class="challenge-status" id="challengeStatus"></p>
-      <p class="result" id="resultText"></p>
-      <div class="hero-actions">
-        <button class="btn btn-dark hidden" id="retryBtn" type="button">Retry Mission</button>
-        <button class="btn btn-primary hidden" id="continueBtn" type="button">Continue Journey</button>
-        <button class="btn btn-dark hidden" id="rechargeBtn" type="button">Recharge Energy</button>
-      </div>
+    <div class="hero-actions fade-in">
+      <button id="nextPillar" class="btn btn-secondary" type="button">View Next Pillar</button>
+      <a class="btn btn-primary" href="${PORTFOLIO_URL}" target="_blank" rel="noreferrer">Open Portfolio</a>
     </div>
   `;
+}
 
-  renderMap();
+function renderFullView(pillar, nextIndex) {
+  return `
+    <div class="detail-head fade-in">
+      <p class="detail-pill">${pillar.timeline}</p>
+      <h2>${pillar.title}</h2>
+      <p class="detail-summary">${pillar.summary}</p>
+    </div>
 
-  const approachGrid = document.getElementById("approachGrid");
-  const startChallenge = document.getElementById("startChallenge");
-  const challengeMount = document.getElementById("challengeMount");
-  const challengeStatus = document.getElementById("challengeStatus");
-  const resultText = document.getElementById("resultText");
-  const retryBtn = document.getElementById("retryBtn");
-  const continueBtn = document.getElementById("continueBtn");
-  const rechargeBtn = document.getElementById("rechargeBtn");
+    <div class="detail-grid">
+      <article class="detail-block fade-in">
+        <h3>Role Highlights</h3>
+        <ul>
+          ${pillar.roles.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </article>
 
-  function registerDisposer(fn) {
-    disposers.push(fn);
+      <article class="detail-block fade-in">
+        <h3>Impact Notes</h3>
+        <ul>
+          ${pillar.impact.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </article>
+
+      <article class="detail-block fade-in">
+        <h3>Role Fit For Marketing Media Executive</h3>
+        <ul>
+          ${pillar.fit.map((item) => `<li>${item}</li>`).join("")}
+        </ul>
+      </article>
+
+      ${renderDecisionBlock(pillar)}
+
+      <article class="detail-block proof-block fade-in">
+        <h3>Proof Touchpoint</h3>
+        <p>${pillar.proof.hint}</p>
+        <a class="btn btn-primary" href="${pillar.proof.url}" target="_blank" rel="noreferrer">${pillar.proof.label}</a>
+      </article>
+    </div>
+
+    <div class="hero-actions fade-in">
+      <button id="nextPillar" class="btn btn-secondary" type="button">View Next Pillar</button>
+      <a class="btn btn-primary" href="${PORTFOLIO_URL}" target="_blank" rel="noreferrer">Open Portfolio</a>
+    </div>
+  `;
+}
+
+function renderDetails(index) {
+  const pillar = pillars[index];
+  const nextIndex = (index + 1) % pillars.length;
+
+  detailPanel.classList.remove("hidden");
+  markReviewed(index);
+
+  mapStatus.textContent = `Viewing ${pillar.title} (${index + 1} of ${pillars.length}).`;
+
+  detailPanel.innerHTML = state.quickMode ? renderQuickView(pillar, nextIndex) : renderFullView(pillar, nextIndex);
+  detailPanel.classList.add("fade-in");
+
+  const nextButton = document.getElementById("nextPillar");
+  if (nextButton) {
+    nextButton.addEventListener("click", () => {
+      state.activeIndex = nextIndex;
+      renderPillars();
+      renderDetails(state.activeIndex);
+    });
   }
 
-  function cleanupMission() {
-    while (disposers.length > 0) {
-      const fn = disposers.pop();
-      try {
-        fn();
-      } catch (_e) {
-        // ignore cleanup errors
-      }
-    }
+  detailPanel.querySelectorAll(".decision-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.decisions[pillar.id] = Number(button.dataset.decision);
+      setProgressUI();
+      renderDetails(index);
+    });
+  });
+
+  renderPillars();
+}
+
+function stopGuidedReview(message) {
+  state.guidedActive = false;
+  if (state.guidedTimer) {
+    clearInterval(state.guidedTimer);
+    state.guidedTimer = null;
+  }
+  if (state.guidedStepper) {
+    clearInterval(state.guidedStepper);
+    state.guidedStepper = null;
   }
 
-  activeCleanup = cleanupMission;
+  startGuided.classList.remove("hidden");
+  stopGuided.classList.add("hidden");
 
-  function finishMission(success, detailText) {
-    if (resolved) {
+  if (message) {
+    guidedStatus.textContent = message;
+  }
+}
+
+function startGuidedReview() {
+  if (state.guidedActive) {
+    return;
+  }
+
+  state.guidedActive = true;
+  state.guidedSecondsLeft = 90;
+
+  startGuided.classList.add("hidden");
+  stopGuided.classList.remove("hidden");
+
+  const firstUnreviewed = pillars.findIndex((_, idx) => !state.reviewed.has(idx));
+  state.activeIndex = firstUnreviewed === -1 ? 0 : firstUnreviewed;
+  renderPillars();
+  renderDetails(state.activeIndex);
+  document.getElementById("campaignMap").scrollIntoView({ behavior: "smooth", block: "start" });
+
+  guidedStatus.textContent = `Guided mode active: ${state.guidedSecondsLeft}s remaining.`;
+
+  state.guidedTimer = setInterval(() => {
+    state.guidedSecondsLeft -= 1;
+    if (state.guidedSecondsLeft <= 0) {
+      stopGuidedReview("Guided review complete. You can continue exploring any pillar.");
       return;
     }
-    resolved = true;
-    cleanupMission();
-    startChallenge.disabled = true;
+    guidedStatus.textContent = `Guided mode active: ${state.guidedSecondsLeft}s remaining.`;
+  }, 1000);
 
-    if (success) {
-      const approachBonus = mission.approaches[selectedApproach].bonus;
-      const influenceGain = 30 + approachBonus;
-      state.influence += influenceGain;
-
-      if (!state.completed.has(index)) {
-        state.completed.add(index);
-        state.badges.push(mission.badge);
-      }
-
-      if (index === state.unlockedIndex && index < missions.length - 1) {
-        state.unlockedIndex += 1;
-      }
-
-      challengeStatus.className = "challenge-status status-success";
-      challengeStatus.textContent = `Mission clear. +${influenceGain} influence.`;
-      resultText.textContent = detailText || `Badge earned: ${mission.badge}`;
-      continueBtn.classList.remove("hidden");
-      mapStatus.textContent = `Checkpoint complete: ${mission.title}`;
-    } else {
-      state.energy -= 1;
-      challengeStatus.className = "challenge-status status-warn";
-      challengeStatus.textContent = "Mission failed.";
-      resultText.textContent = detailText || (state.energy > 0 ? "Retry to secure this checkpoint." : "Energy depleted. Recharge to continue.");
-
-      if (state.energy > 0) {
-        retryBtn.classList.remove("hidden");
-      } else {
-        rechargeBtn.classList.remove("hidden");
-      }
-
-      mapStatus.textContent = "Mission failed. Adjust strategy and try again.";
+  state.guidedStepper = setInterval(() => {
+    if (!state.guidedActive) {
+      return;
     }
 
-    updateHud();
-    renderMap();
-
-    if (state.completed.size === missions.length) {
-      finalVault.classList.remove("hidden");
-      mapStatus.textContent = "All checkpoints completed. Portfolio vault unlocked.";
-    }
-  }
-
-  function setupTimingChallenge() {
-    const targetHits = mission.targetHits || 3;
-    const maxMisses = mission.maxMisses || 2;
-
-    challengeMount.innerHTML = `
-      <div class="timing-wrap">
-        <div class="timing-track">
-          <div class="timing-zone"></div>
-          <div class="timing-marker" id="timingMarker"></div>
-        </div>
-        <p class="mini-stat" id="timingReadout">Precision locks: 0 / ${targetHits} | Misses: 0 / ${maxMisses}</p>
-        <button class="btn btn-dark" id="timingLockBtn" type="button" disabled>Lock Signal</button>
-      </div>
-    `;
-
-    const timingMarker = document.getElementById("timingMarker");
-    const timingReadout = document.getElementById("timingReadout");
-    const timingLockBtn = document.getElementById("timingLockBtn");
-
-    let markerX = 0;
-    let velocity = 2.8;
-    let hits = 0;
-    let misses = 0;
-    let intervalId = null;
-
-    function updateReadout() {
-      timingReadout.textContent = `Precision locks: ${hits} / ${targetHits} | Misses: ${misses} / ${maxMisses}`;
+    if (state.reviewed.size === pillars.length) {
+      stopGuidedReview("All pillars reviewed. Candidate brief unlocked.");
+      return;
     }
 
-    function startSweep() {
-      intervalId = setInterval(() => {
-        markerX += velocity;
-        if (markerX >= 100) {
-          markerX = 100;
-          velocity = -velocity;
-        } else if (markerX <= 0) {
-          markerX = 0;
-          velocity = -velocity;
-        }
-        timingMarker.style.left = `${markerX}%`;
-      }, 26);
-      registerDisposer(() => clearInterval(intervalId));
-    }
-
-    timingLockBtn.addEventListener("click", () => {
-      if (resolved) {
-        return;
-      }
-      const inZone = markerX >= 40 && markerX <= 62;
-      if (inZone) {
-        hits += 1;
-      } else {
-        misses += 1;
-      }
-      updateReadout();
-
-      if (hits >= targetHits) {
-        finishMission(true, `Badge earned: ${mission.badge} | Challenge: Signal lock complete.`);
-      } else if (misses > maxMisses) {
-        finishMission(false, "Signal integrity dropped before lock sequence completed.");
-      }
-    });
-
-    startChallenge.addEventListener("click", () => {
-      if (selectedApproach === null || state.energy <= 0 || resolved) {
-        return;
-      }
-      startChallenge.disabled = true;
-      timingLockBtn.disabled = false;
-      challengeStatus.className = "challenge-status";
-      challengeStatus.textContent = "Challenge live: lock the moving signal inside the neon zone.";
-      startSweep();
-    });
-  }
-
-  function setupSequenceChallenge() {
-    const sequenceLength = mission.sequenceLength || 4;
-
-    challengeMount.innerHTML = `
-      <div class="sequence-wrap">
-        <p class="mini-stat" id="sequenceInfo">Pattern length: ${sequenceLength}</p>
-        <p class="sequence-display" id="sequenceDisplay">Awaiting uplink...</p>
-        <div class="sequence-grid" id="sequenceGrid"></div>
-      </div>
-    `;
-
-    const sequenceDisplay = document.getElementById("sequenceDisplay");
-    const sequenceGrid = document.getElementById("sequenceGrid");
-
-    const symbols = ["PR", "SEO", "CRM", "ADS", "UX"];
-    const sequence = Array.from({ length: sequenceLength }, () => symbols[Math.floor(Math.random() * symbols.length)]);
-    let cursor = 0;
-    let readyForInput = false;
-
-    function renderPad() {
-      sequenceGrid.innerHTML = symbols
-        .map((symbol) => `<button class="symbol-btn" type="button" data-symbol="${symbol}">${symbol}</button>`)
-        .join("");
-
-      sequenceGrid.querySelectorAll(".symbol-btn").forEach((button) => {
-        button.addEventListener("click", () => {
-          if (!readyForInput || resolved) {
-            return;
-          }
-          const selected = button.dataset.symbol;
-          if (selected !== sequence[cursor]) {
-            finishMission(false, "Sequence mismatch. Narrative protocol lost sync.");
-            return;
-          }
-          cursor += 1;
-          sequenceDisplay.textContent = `Correct chain: ${cursor} / ${sequence.length}`;
-          if (cursor >= sequence.length) {
-            finishMission(true, `Badge earned: ${mission.badge} | Challenge: pattern decoded.`);
-          }
-        });
-      });
-    }
-
-    function showSequence() {
-      readyForInput = false;
-      sequenceGrid.innerHTML = "";
-      sequenceDisplay.textContent = "Memorize sequence...";
-
-      sequence.forEach((symbol, idx) => {
-        const timeoutId = setTimeout(() => {
-          sequenceDisplay.textContent = symbol;
-        }, 700 * (idx + 1));
-        registerDisposer(() => clearTimeout(timeoutId));
-      });
-
-      const endId = setTimeout(() => {
-        sequenceDisplay.textContent = "Repeat the sequence";
-        readyForInput = true;
-        renderPad();
-      }, 700 * (sequence.length + 1));
-      registerDisposer(() => clearTimeout(endId));
-    }
-
-    startChallenge.addEventListener("click", () => {
-      if (selectedApproach === null || state.energy <= 0 || resolved) {
-        return;
-      }
-      startChallenge.disabled = true;
-      challengeStatus.className = "challenge-status";
-      challengeStatus.textContent = "Challenge live: memorize and replay the strategy sequence.";
-      showSequence();
-    });
-  }
-
-  function setupTriageChallenge() {
-    const targets = mission.targets || ["Audience Signal", "Brand Lift", "Lead Quality"];
-    const decoys = ["Vanity Metrics", "Random Outreach", "Channel Drift", "Unclear CTA"];
-    const options = [...targets, ...decoys].sort(() => Math.random() - 0.5);
-    const pickCount = mission.pickCount || 3;
-    const timeLimit = mission.timeLimit || 12;
-
-    challengeMount.innerHTML = `
-      <div class="triage-wrap">
-        <p class="mini-stat" id="triageInfo">Select exactly ${pickCount} high-impact priorities before timer ends.</p>
-        <p class="mini-stat" id="triageTimer">Time: ${timeLimit}s</p>
-        <div class="triage-grid" id="triageGrid">
-          ${options
-            .map((option) => `<button class="triage-card" type="button" data-option="${option}">${option}</button>`)
-            .join("")}
-        </div>
-        <button class="btn btn-dark" id="triageSubmit" type="button" disabled>Submit Priorities</button>
-      </div>
-    `;
-
-    const triageGrid = document.getElementById("triageGrid");
-    const triageSubmit = document.getElementById("triageSubmit");
-    const triageTimer = document.getElementById("triageTimer");
-
-    const picked = new Set();
-    let remaining = timeLimit;
-    let intervalId = null;
-
-    function updateSubmitState() {
-      triageSubmit.disabled = picked.size !== pickCount;
-    }
-
-    function evaluate() {
-      const selected = Array.from(picked);
-      const success =
-        selected.length === pickCount &&
-        selected.every((item) => targets.includes(item)) &&
-        targets.filter((target) => selected.includes(target)).length >= pickCount;
-
-      if (success) {
-        finishMission(true, `Badge earned: ${mission.badge} | Challenge: priority triage cleared.`);
-      } else {
-        finishMission(false, "Priority mix was off target for this campaign window.");
-      }
-    }
-
-    function startTimer() {
-      intervalId = setInterval(() => {
-        remaining -= 1;
-        triageTimer.textContent = `Time: ${remaining}s`;
-        if (remaining <= 0) {
-          finishMission(false, "Triage window expired before priorities were validated.");
-        }
-      }, 1000);
-      registerDisposer(() => clearInterval(intervalId));
-    }
-
-    triageGrid.querySelectorAll(".triage-card").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (resolved) {
-          return;
-        }
-        const option = button.dataset.option;
-        if (picked.has(option)) {
-          picked.delete(option);
-          button.classList.remove("selected");
-        } else if (picked.size < pickCount) {
-          picked.add(option);
-          button.classList.add("selected");
-        }
-        updateSubmitState();
-      });
-    });
-
-    triageSubmit.addEventListener("click", evaluate);
-
-    startChallenge.addEventListener("click", () => {
-      if (selectedApproach === null || state.energy <= 0 || resolved) {
-        return;
-      }
-      startChallenge.disabled = true;
-      triageGrid.classList.add("active");
-      challengeStatus.className = "challenge-status";
-      challengeStatus.textContent = "Challenge live: lock the 3 highest-impact priorities.";
-      startTimer();
-    });
-  }
-
-  function setupStoryAssemblyChallenge() {
-    const sequence = mission.storySequence || [
-      "Audience insight identified",
-      "Message architecture drafted",
-      "Creative development completed",
-      "Campaign launched"
-    ];
-    const shuffled = sequence
-      .map((text, order) => ({ text, order }))
-      .sort(() => Math.random() - 0.5);
-
-    challengeMount.innerHTML = `
-      <div class="story-wrap">
-        <p class="mini-stat" id="storyInfo">Build the narrative in order. Mistakes allowed: 1</p>
-        <div class="story-bank" id="storyBank">
-          ${shuffled
-            .map(
-              (item) =>
-                `<button class="story-card" type="button" data-order="${item.order}" data-text="${item.text}">${item.text}</button>`
-            )
-            .join("")}
-        </div>
-        <p class="mini-stat">Narrative Assembly</p>
-        <div class="story-board" id="storyBoard"></div>
-      </div>
-    `;
-
-    const storyBank = document.getElementById("storyBank");
-    const storyBoard = document.getElementById("storyBoard");
-    const storyInfo = document.getElementById("storyInfo");
-
-    let expected = 0;
-    let mistakes = 0;
-    let live = false;
-
-    storyBank.querySelectorAll(".story-card").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (!live || resolved) {
-          return;
-        }
-        const order = Number(button.dataset.order);
-        if (order === expected) {
-          button.disabled = true;
-          button.classList.add("locked");
-          const chip = document.createElement("div");
-          chip.className = "story-chip";
-          chip.textContent = `${expected + 1}. ${button.dataset.text}`;
-          storyBoard.appendChild(chip);
-          expected += 1;
-          if (expected >= sequence.length) {
-            finishMission(true, `Badge earned: ${mission.badge} | Challenge: narrative assembly complete.`);
-          } else {
-            storyInfo.textContent = `Correct. Next step: ${expected + 1} of ${sequence.length}`;
-          }
-        } else {
-          mistakes += 1;
-          button.classList.add("error");
-          const clearId = setTimeout(() => button.classList.remove("error"), 250);
-          registerDisposer(() => clearTimeout(clearId));
-          if (mistakes > 1) {
-            finishMission(false, "Narrative sequence broke. Story structure did not hold.");
-          } else {
-            storyInfo.textContent = "One mismatch logged. One mistake remaining.";
-          }
-        }
-      });
-    });
-
-    startChallenge.addEventListener("click", () => {
-      if (selectedApproach === null || state.energy <= 0 || resolved) {
-        return;
-      }
-      startChallenge.disabled = true;
-      live = true;
-      storyBank.classList.add("active");
-      challengeStatus.className = "challenge-status";
-      challengeStatus.textContent = "Challenge live: assemble the publishing story in the correct arc.";
-    });
-  }
-
-  const challengeSetups = {
-    timing: setupTimingChallenge,
-    sequence: setupSequenceChallenge,
-    triage: setupTriageChallenge,
-    storyAssembly: setupStoryAssemblyChallenge
-  };
-
-  const setupChallenge = challengeSetups[mission.challengeType] || setupTimingChallenge;
-  setupChallenge();
-
-  approachGrid.querySelectorAll(".approach-btn").forEach((button) => {
-    button.addEventListener("click", () => {
-      if (resolved) {
-        return;
-      }
-      selectedApproach = Number(button.dataset.approach);
-      approachGrid.querySelectorAll(".approach-btn").forEach((b) => b.classList.remove("selected"));
-      button.classList.add("selected");
-      startChallenge.disabled = false;
-      challengeStatus.className = "challenge-status";
-      challengeStatus.textContent = `Approach selected: ${missions[index].approaches[selectedApproach].label}`;
-    });
-  });
-
-  retryBtn.addEventListener("click", () => {
-    openMission(index);
-  });
-
-  rechargeBtn.addEventListener("click", () => {
-    state.energy = 3;
-    updateHud();
-    openMission(index);
-  });
-
-  continueBtn.addEventListener("click", () => {
-    missionPanel.classList.add("hidden");
-    state.activeMissionIndex = null;
-    renderMap();
-    if (activeCleanup) {
-      activeCleanup();
-      activeCleanup = null;
-    }
-  });
+    const nextUnreviewed = pillars.findIndex((_, idx) => !state.reviewed.has(idx));
+    state.activeIndex = nextUnreviewed === -1 ? (state.activeIndex + 1) % pillars.length : nextUnreviewed;
+    renderPillars();
+    renderDetails(state.activeIndex);
+  }, 18000);
 }
 
-function startQuest() {
-  state.started = true;
-  state.unlockedIndex = 0;
-  state.activeMissionIndex = 0;
-  mapStatus.textContent = "Quest live. Select the first unlocked checkpoint.";
-  finalVault.classList.add("hidden");
-  renderMap();
-  openMission(0);
-}
+function toggleRecruiterMode() {
+  state.quickMode = !state.quickMode;
+  toggleQuickMode.textContent = state.quickMode ? "Disable 30s Recruiter Mode" : "Enable 30s Recruiter Mode";
+  guidedStatus.textContent = state.quickMode
+    ? "30s Recruiter Mode enabled: showing condensed summary and role-fit view."
+    : "Guided mode is optional. You can also review pillars in any order.";
 
-function resetQuest() {
-  if (activeCleanup) {
-    activeCleanup();
-    activeCleanup = null;
+  if (!detailPanel.classList.contains("hidden")) {
+    renderDetails(state.activeIndex);
   }
-
-  state.started = false;
-  state.unlockedIndex = -1;
-  state.activeMissionIndex = null;
-  state.completed = new Set();
-  state.influence = 0;
-  state.energy = 3;
-  state.badges = [];
-
-  missionPanel.classList.add("hidden");
-  finalVault.classList.add("hidden");
-  mapStatus.textContent = "Press Launch Quest to begin.";
-  updateHud();
-  renderMap();
 }
 
-startBtn.addEventListener("click", startQuest);
-resetBtn.addEventListener("click", resetQuest);
+startGuided.addEventListener("click", startGuidedReview);
+stopGuided.addEventListener("click", () => {
+  stopGuidedReview("Guided mode stopped. Continue reviewing pillars in any order.");
+});
+toggleQuickMode.addEventListener("click", toggleRecruiterMode);
 
-updateHud();
-renderMap();
+setProgressUI();
+renderPillars();

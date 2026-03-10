@@ -3,79 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Portfolio Quest | Deedra Gilbert</title>
+    <title>Deedra Gilbert | Interactive Campaign Map</title>
     <meta
       name="description"
-      content="Interactive gamified journey through Deedra Gilbert's marketing and communications career."
+      content="A recruiter-friendly interactive campaign map highlighting Deedra Gilbert's marketing and communications impact."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bungee&family=VT323&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="bg-grid" aria-hidden="true"></div>
-    <div class="bg-orb orb-a" aria-hidden="true"></div>
-    <div class="bg-orb orb-b" aria-hidden="true"></div>
     <main class="app-shell">
       <header class="hero">
-        <p class="eyebrow">Interactive Candidate Experience</p>
-        <h1>Quest: Unlock Deedra Gilbert's Marketing Journey</h1>
-        <p class="intro">
-          Recruiter briefing: this is a short highlight reel, not the full resume.
-          Complete the key missions, then open the portfolio vault for full proof.
-        </p>
-        <div class="hero-actions">
-          <button id="startQuest" class="btn btn-primary" type="button">Launch Quest</button>
-          <button id="resetQuest" class="btn btn-dark" type="button">Reset Run</button>
-          <a class="btn btn-ghost" href="#finalVault">Skip to Portfolio</a>
+        <div class="hero-layout">
+          <div class="hero-content">
+            <p class="eyebrow">Interactive Candidate Brief</p>
+            <h1>Deedra Gilbert | Marketing & Communications Campaign Map</h1>
+            <p class="intro">
+              This is a quick strategic overview designed for recruiters. Select any pillar below to review
+              role-specific impact highlights for the Marketing Media Executive scope, then open the
+              portfolio for full work samples.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-secondary" href="#campaignMap">Jump to Campaign Map</a>
+              <button id="startGuided" class="btn btn-secondary" type="button">Start Guided Review (90s)</button>
+              <button id="stopGuided" class="btn btn-secondary hidden" type="button">Stop Guided Review</button>
+              <button id="toggleQuickMode" class="btn btn-secondary" type="button">Enable 30s Recruiter Mode</button>
+              <a class="btn btn-primary" href="https://new.express.adobe.com/webpage/x9sDwoekJyT6A" target="_blank" rel="noreferrer">Open Portfolio</a>
+              <a class="btn btn-secondary" href="DEEDRA%20GILBERT%20RESUME_CV%20333!.pdf" target="_blank" rel="noreferrer">Open Resume</a>
+            </div>
+            <p id="guidedStatus" class="guided-status">Guided mode is optional. You can also review pillars in any order.</p>
+            <a class="map-cue" href="#campaignMap" aria-label="Scroll to Campaign Map">
+              <span class="map-cue-text">Campaign Map Below</span>
+              <span class="map-cue-arrow">v</span>
+            </a>
+          </div>
+          <figure class="hero-photo-wrap">
+            <img src="assets/Deedra.png" alt="Portrait of Deedra Gilbert" class="hero-photo" />
+          </figure>
         </div>
       </header>
 
-      <section class="hud" aria-live="polite">
-        <article class="hud-card">
-          <p>Energy</p>
-          <strong id="energyStat">3</strong>
-        </article>
-        <article class="hud-card">
-          <p>Influence</p>
-          <strong id="influenceStat">0</strong>
-        </article>
-        <article class="hud-card">
-          <p>Badges</p>
-          <strong id="badgeStat">0 / 4</strong>
-        </article>
+      <section class="gamify-shell" aria-live="polite">
+        <div class="progress-row">
+          <p id="progressText">Pillar Progress: 0 / 4 reviewed</p>
+          <p id="unlockText">Full Candidate Brief: Locked</p>
+        </div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <div class="fit-row">
+          <p id="fitScoreText">Role Fit Score: 0 / 100</p>
+          <div class="fit-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="fitBar" class="fit-bar"></div>
+          </div>
+        </div>
+        <div id="tokenTray" class="token-tray"></div>
       </section>
 
-      <section class="map-shell">
+      <section id="campaignMap" class="map-shell" aria-live="polite">
         <div class="map-head">
           <h2>Campaign Map</h2>
-          <p id="mapStatus">Press Launch Quest to begin.</p>
+          <p id="mapStatus">Start here: select a pillar card to explore relevant experience.</p>
         </div>
-        <div id="questMap" class="quest-map"></div>
+        <div id="pillarMap" class="pillar-map"></div>
       </section>
 
-      <section id="missionPanel" class="mission-panel hidden" aria-live="polite"></section>
+      <section id="detailPanel" class="detail-panel hidden" aria-live="polite"></section>
 
-      <section id="badgeTray" class="badge-tray hidden">
-        <h3>Collected Career Badges</h3>
-        <div id="badgeList" class="badge-list"></div>
-      </section>
-
-      <section id="finalVault" class="final-vault hidden">
+      <section id="finalCta" class="final-cta hidden">
         <h2>Portfolio Vault Open</h2>
         <p>
-          All checkpoints complete. Deedra's record demonstrates sustained execution across
-          marketing, communications, leadership support, and innovation storytelling.
+          All 4 campaign pillars reviewed. If this aligns with the Marketing Media Executive scope at
+          Tampa Bay Times, the full portfolio, resume, and interview contact path are ready.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="https://new.express.adobe.com/webpage/x9sDwoekJyT6A" target="_blank" rel="noreferrer">Open Full Portfolio</a>
-          <a class="btn btn-dark" href="DEEDRA%20GILBERT%20RESUME_CV%20333!.pdf" target="_blank" rel="noreferrer">Open Resume</a>
+          <a class="btn btn-primary" href="https://new.express.adobe.com/webpage/x9sDwoekJyT6A" target="_blank" rel="noreferrer">Review Portfolio Samples</a>
+          <a class="btn btn-secondary" href="DEEDRA%20GILBERT%20RESUME_CV%20333!.pdf" target="_blank" rel="noreferrer">Review Resume</a>
+          <a class="btn btn-secondary" href="mailto:deedra.gilbert@gmail.com?subject=Marketing%20Media%20Executive%20Interview%20Discussion">Request Interview</a>
         </div>
-        <p class="cta">Ready to talk about growth, audience engagement, and revenue outcomes at Tampa Bay Times?</p>
       </section>
     </main>
 
