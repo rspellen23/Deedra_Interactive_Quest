@@ -22,7 +22,7 @@
         <div class="hero-layout">
           <div class="hero-content">
             <p class="eyebrow">Interactive Candidate Brief</p>
-            <h1>Deedra Gilbert | Marketing & Communications Campaign Map</h1>
+            <h1>Deedra Gilbert | Mission Map</h1>
             <p class="intro">
               This is a quick strategic overview designed for recruiters. Select any pillar below to review
               role-specific impact highlights for the Marketing Media Executive scope, then open the
@@ -36,9 +36,9 @@
               <a class="btn btn-primary" href="https://new.express.adobe.com/webpage/x9sDwoekJyT6A" target="_blank" rel="noreferrer">Open Portfolio</a>
               <a class="btn btn-secondary" href="DEEDRA%20GILBERT%20RESUME_CV%20333!.pdf" target="_blank" rel="noreferrer">Open Resume</a>
             </div>
-            <p id="guidedStatus" class="guided-status">Guided mode is optional. You can also review pillars in any order.</p>
+            <p id="guidedStatus" class="guided-status">Guided mode is optional. You can also review checkpoints in any order.</p>
             <a class="map-cue" href="#campaignMap" aria-label="Scroll to Campaign Map">
-              <span class="map-cue-text">Campaign Map Below</span>
+              <span class="map-cue-text">Mission Map Below</span>
               <span class="map-cue-arrow">v</span>
             </a>
           </div>
@@ -49,8 +49,11 @@
       </header>
 
       <section class="gamify-shell" aria-live="polite">
+        <p class="mission-objective">
+          Mission Objective: Clear all 4 checkpoints by selecting the insight-aligned strategy at each touchpoint.
+        </p>
         <div class="progress-row">
-          <p id="progressText">Pillar Progress: 0 / 4 reviewed</p>
+          <p id="progressText">Checkpoint Progress: 0 / 4 cleared</p>
           <p id="unlockText">Full Candidate Brief: Locked</p>
         </div>
         <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
@@ -62,13 +65,14 @@
             <div id="fitBar" class="fit-bar"></div>
           </div>
         </div>
+        <div id="journeyRail" class="journey-rail"></div>
         <div id="tokenTray" class="token-tray"></div>
       </section>
 
       <section id="campaignMap" class="map-shell" aria-live="polite">
         <div class="map-head">
-          <h2>Campaign Map</h2>
-          <p id="mapStatus">Start here: select a pillar card to explore relevant experience.</p>
+          <h2>Mission Map</h2>
+          <p id="mapStatus">Checkpoint 1 active. Select a checkpoint card to begin.</p>
         </div>
         <div id="pillarMap" class="pillar-map"></div>
       </section>
@@ -78,7 +82,7 @@
       <section id="finalCta" class="final-cta hidden">
         <h2>Portfolio Vault Open</h2>
         <p>
-          All 4 campaign pillars reviewed. If this aligns with the Marketing Media Executive scope at
+          All 4 checkpoints cleared. If this aligns with the Marketing Media Executive scope at
           Tampa Bay Times, the full portfolio, resume, and interview contact path are ready.
         </p>
         <div class="hero-actions">

@@ -214,6 +214,12 @@ h1 {
   padding: 0.85rem;
 }
 
+.mission-objective {
+  margin: 0 0 0.65rem;
+  color: #c9d7ff;
+  font-size: 0.92rem;
+}
+
 .progress-row {
   display: flex;
   justify-content: space-between;
@@ -274,6 +280,63 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
+}
+
+.journey-rail {
+  margin-top: 0.65rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.rail-node {
+  border: 1px solid rgba(120, 143, 255, 0.3);
+  border-radius: 10px;
+  padding: 0.45rem;
+  display: grid;
+  gap: 0.15rem;
+  background: rgba(13, 22, 53, 0.5);
+}
+
+.rail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #90a3dc;
+  box-shadow: 0 0 0 2px rgba(120, 143, 255, 0.2);
+}
+
+.rail-title {
+  font-size: 0.78rem;
+  color: #d2deff;
+}
+
+.rail-status {
+  font-size: 0.72rem;
+  color: #9fb0df;
+  text-transform: uppercase;
+}
+
+.rail-node.cleared {
+  border-color: rgba(95, 229, 255, 0.45);
+}
+
+.rail-node.cleared .rail-dot {
+  background: #77f0ff;
+  box-shadow: 0 0 8px rgba(95, 229, 255, 0.4);
+}
+
+.rail-node.active {
+  border-color: rgba(255, 199, 106, 0.5);
+}
+
+.rail-node.active .rail-dot {
+  background: #ffc76a;
+  box-shadow: 0 0 8px rgba(255, 199, 106, 0.45);
+}
+
+.rail-node.locked {
+  opacity: 0.55;
 }
 
 .token {
@@ -341,6 +404,12 @@ h1 {
   border-color: rgba(95, 229, 255, 0.78);
   box-shadow: 0 0 0 1px rgba(95, 229, 255, 0.28), 0 0 16px rgba(95, 229, 255, 0.24);
   background: linear-gradient(165deg, rgba(25, 47, 106, 0.9), rgba(14, 27, 67, 0.9));
+}
+
+.pillar-card.locked {
+  opacity: 0.45;
+  filter: grayscale(0.35);
+  cursor: not-allowed;
 }
 
 .pillar-label {
@@ -463,6 +532,15 @@ h1 {
   border-color: rgba(95, 229, 255, 0.56);
 }
 
+.decision-btn.selected {
+  border-color: rgba(95, 229, 255, 0.75);
+  box-shadow: 0 0 0 1px rgba(95, 229, 255, 0.25) inset;
+}
+
+.decision-state {
+  color: #afc8ff;
+}
+
 .decision-good {
   border-color: rgba(95, 229, 255, 0.5);
   box-shadow: 0 0 0 1px rgba(95, 229, 255, 0.18) inset;
@@ -540,6 +618,10 @@ h1 {
 }
 
 @media (max-width: 900px) {
+  .journey-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .pillar-map {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

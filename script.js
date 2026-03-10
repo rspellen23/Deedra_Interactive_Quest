@@ -159,6 +159,7 @@ const progressText = document.getElementById("progressText");
 const progressBar = document.getElementById("progressBar");
 const tokenTray = document.getElementById("tokenTray");
 const unlockText = document.getElementById("unlockText");
+const journeyRail = document.getElementById("journeyRail");
 const finalCta = document.getElementById("finalCta");
 const startGuided = document.getElementById("startGuided");
 const stopGuided = document.getElementById("stopGuided");
@@ -169,7 +170,7 @@ const fitBar = document.getElementById("fitBar");
 
 const state = {
   activeIndex: 0,
-  reviewed: new Set(),
+  completed: new Set(),
   tokens: new Set(),
   decisions: {},
   guidedActive: false,
@@ -177,24 +178,29 @@ const state = {
   guidedStepper: null,
   guidedSecondsLeft: 0,
   quickMode: false,
+  unlockedIndex: 0,
   displayedFitScore: 0
 };
 
+function isLocked(index) {
+  return index > state.unlockedIndex && !state.completed.has(index);
+}
+
 function computeFitScore() {
-  const reviewedScore = (state.reviewed.size / pillars.length) * 70;
+  const completionScore = (state.completed.size / pillars.length) * 70;
 
   let decisionScore = 0;
-  pillars.forEach((pillar) => {
+  pillars.forEach((pillar, index) => {
     const choice = state.decisions[pillar.id];
     if (choice !== undefined) {
       decisionScore += 3;
-      if (choice === pillar.decision.recommendedIndex) {
+      if (choice === pillar.decision.recommendedIndex && state.completed.has(index)) {
         decisionScore += 4.5;
       }
     }
   });
 
-  return Math.round(Math.min(100, reviewedScore + decisionScore));
+  return Math.round(Math.min(100, completionScore + decisionScore));
 }
 
 function animateFitScore(target) {
@@ -221,16 +227,40 @@ function animateFitScore(target) {
   }, 16);
 }
 
+function renderJourneyRail() {
+  journeyRail.innerHTML = pillars
+    .map((pillar, index) => {
+      const status = state.completed.has(index)
+        ? "cleared"
+        : isLocked(index)
+          ? "locked"
+          : index === state.activeIndex
+            ? "active"
+            : "available";
+      const label = status === "cleared" ? "Cleared" : status === "locked" ? "Locked" : status === "active" ? "Active" : "Open";
+
+      return `
+        <div class="rail-node ${status}">
+          <span class="rail-dot"></span>
+          <span class="rail-title">${pillar.title}</span>
+          <span class="rail-status">${label}</span>
+        </div>
+      `;
+    })
+    .join("");
+}
+
 function renderPillars() {
   pillarMap.innerHTML = pillars
     .map((pillar, index) => {
-      const reviewed = state.reviewed.has(index);
+      const locked = isLocked(index);
+      const completed = state.completed.has(index);
       return `
-        <button class="pillar-card ${index === state.activeIndex ? "active" : ""} ${reviewed ? "reviewed" : ""}" type="button" data-index="${index}">
-          <p class="pillar-label">Pillar ${index + 1}</p>
+        <button class="pillar-card ${index === state.activeIndex ? "active" : ""} ${completed ? "reviewed" : ""} ${locked ? "locked" : ""}" type="button" data-index="${index}" ${locked ? "disabled" : ""}>
+          <p class="pillar-label">Checkpoint ${index + 1}</p>
           <h3>${pillar.title}</h3>
           <p class="pillar-timeline">${pillar.timeline}</p>
-          <p class="pillar-review">${reviewed ? "Insight Token Unlocked" : "Not reviewed yet"}</p>
+          <p class="pillar-review">${completed ? "Checkpoint Cleared" : locked ? "Locked" : "Ready"}</p>
         </button>
       `;
     })
@@ -246,12 +276,12 @@ function renderPillars() {
 }
 
 function setProgressUI() {
-  const reviewedCount = state.reviewed.size;
-  progressText.textContent = `Pillar Progress: ${reviewedCount} / ${pillars.length} reviewed`;
-  progressBar.style.width = `${(reviewedCount / pillars.length) * 100}%`;
-  progressBar.parentElement.setAttribute("aria-valuenow", String(reviewedCount));
+  const completedCount = state.completed.size;
+  progressText.textContent = `Checkpoint Progress: ${completedCount} / ${pillars.length} cleared`;
+  progressBar.style.width = `${(completedCount / pillars.length) * 100}%`;
+  progressBar.parentElement.setAttribute("aria-valuenow", String(completedCount));
 
-  unlockText.textContent = reviewedCount === pillars.length ? "Full Candidate Brief: Unlocked" : "Full Candidate Brief: Locked";
+  unlockText.textContent = completedCount === pillars.length ? "Full Candidate Brief: Unlocked" : "Full Candidate Brief: Locked";
 
   tokenTray.innerHTML = pillars
     .map((pillar, index) => {
@@ -260,55 +290,69 @@ function setProgressUI() {
     })
     .join("");
 
-  if (reviewedCount === pillars.length) {
+  if (completedCount === pillars.length) {
     finalCta.classList.remove("hidden");
     finalCta.classList.add("fade-in");
   }
 
   animateFitScore(computeFitScore());
+  renderJourneyRail();
 }
 
-function markReviewed(index) {
-  state.reviewed.add(index);
+function clearCheckpoint(index) {
+  if (state.completed.has(index)) {
+    return;
+  }
+
+  state.completed.add(index);
   state.tokens.add(index);
+  state.unlockedIndex = Math.min(pillars.length - 1, Math.max(state.unlockedIndex, index + 1));
+
+  mapStatus.textContent = `Checkpoint ${index + 1} cleared: ${pillars[index].title}.`;
+  guidedStatus.textContent = `Artifact unlocked: ${pillars[index].token}.`;
   setProgressUI();
 }
 
-function renderDecisionBlock(pillar) {
+function renderDecisionBlock(index, pillar) {
   const selected = state.decisions[pillar.id];
+  const completed = state.completed.has(index);
+  let statusLine = "Select the strategy you believe will perform best to clear this checkpoint.";
 
-  if (selected === undefined) {
-    return `
-      <article class="detail-block decision-block fade-in">
-        <h3>Quick Strategy Call</h3>
-        <p>${pillar.decision.prompt}</p>
-        <div class="decision-options">
-          ${pillar.decision.options
-            .map((option, idx) => `<button class="decision-btn" type="button" data-decision="${idx}">${option}</button>`)
-            .join("")}
-        </div>
-      </article>
-    `;
+  if (completed) {
+    statusLine = `Checkpoint cleared. Artifact unlocked: ${pillar.token}.`;
+  } else if (selected !== undefined) {
+    statusLine =
+      selected === pillar.decision.recommendedIndex
+        ? "Aligned strategy selected. Checkpoint cleared."
+        : "Not aligned yet. Choose Deedra's approach to clear this checkpoint.";
   }
 
-  const matchClass = selected === pillar.decision.recommendedIndex ? "decision-good" : "decision-neutral";
   return `
-    <article class="detail-block decision-block ${matchClass} fade-in">
-      <h3>Quick Strategy Call</h3>
-      <p><strong>Your Choice:</strong> ${pillar.decision.options[selected]}</p>
-      <p><strong>Deedra's Approach:</strong> ${pillar.decision.deedraApproach}</p>
-      <p><strong>Outcome:</strong> ${pillar.decision.outcome}</p>
+    <article class="detail-block decision-block ${completed ? "decision-good" : "decision-neutral"} fade-in">
+      <h3>Checkpoint Decision</h3>
+      <p>${pillar.decision.prompt}</p>
+      <div class="decision-options">
+        ${pillar.decision.options
+          .map((option, idx) => {
+            const selectedClass = selected === idx ? "selected" : "";
+            return `<button class="decision-btn ${selectedClass}" type="button" data-decision="${idx}">${option}</button>`;
+          })
+          .join("")}
+      </div>
+      <p class="decision-state">${statusLine}</p>
+      ${selected !== undefined ? `<p><strong>Deedra's Approach:</strong> ${pillar.decision.deedraApproach}</p><p><strong>Outcome:</strong> ${pillar.decision.outcome}</p>` : ""}
     </article>
   `;
 }
 
-function renderQuickView(pillar, nextIndex) {
+function renderQuickView(index, pillar) {
+  const nextIndex = Math.min(pillars.length - 1, index + 1);
   return `
     <div class="detail-head fade-in">
       <p class="detail-pill">${pillar.timeline}</p>
       <h2>${pillar.title}</h2>
       <p class="detail-summary">${pillar.summary}</p>
-      <p class="quick-tag">30s Recruiter Mode: condensed summary + role fit only.</p>
+      <p class="quick-tag">30s Recruiter Mode: condensed summary + role fit + checkpoint decision.</p>
     </div>
 
     <div class="detail-grid quick-grid">
@@ -319,6 +363,8 @@ function renderQuickView(pillar, nextIndex) {
         </ul>
       </article>
 
+      ${renderDecisionBlock(index, pillar)}
+
       <article class="detail-block proof-block fade-in">
         <h3>Proof Touchpoint</h3>
         <p>${pillar.proof.hint}</p>
@@ -327,13 +373,13 @@ function renderQuickView(pillar, nextIndex) {
     </div>
 
     <div class="hero-actions fade-in">
-      <button id="nextPillar" class="btn btn-secondary" type="button">View Next Pillar</button>
+      <button id="nextPillar" class="btn btn-secondary" type="button">View Next Checkpoint</button>
       <a class="btn btn-primary" href="${PORTFOLIO_URL}" target="_blank" rel="noreferrer">Open Portfolio</a>
     </div>
   `;
 }
 
-function renderFullView(pillar, nextIndex) {
+function renderFullView(index, pillar) {
   return `
     <div class="detail-head fade-in">
       <p class="detail-pill">${pillar.timeline}</p>
@@ -363,7 +409,7 @@ function renderFullView(pillar, nextIndex) {
         </ul>
       </article>
 
-      ${renderDecisionBlock(pillar)}
+      ${renderDecisionBlock(index, pillar)}
 
       <article class="detail-block proof-block fade-in">
         <h3>Proof Touchpoint</h3>
@@ -373,7 +419,7 @@ function renderFullView(pillar, nextIndex) {
     </div>
 
     <div class="hero-actions fade-in">
-      <button id="nextPillar" class="btn btn-secondary" type="button">View Next Pillar</button>
+      <button id="nextPillar" class="btn btn-secondary" type="button">View Next Checkpoint</button>
       <a class="btn btn-primary" href="${PORTFOLIO_URL}" target="_blank" rel="noreferrer">Open Portfolio</a>
     </div>
   `;
@@ -381,20 +427,18 @@ function renderFullView(pillar, nextIndex) {
 
 function renderDetails(index) {
   const pillar = pillars[index];
-  const nextIndex = (index + 1) % pillars.length;
 
   detailPanel.classList.remove("hidden");
-  markReviewed(index);
+  mapStatus.textContent = `Checkpoint ${index + 1} active: ${pillar.title}.`;
 
-  mapStatus.textContent = `Viewing ${pillar.title} (${index + 1} of ${pillars.length}).`;
-
-  detailPanel.innerHTML = state.quickMode ? renderQuickView(pillar, nextIndex) : renderFullView(pillar, nextIndex);
+  detailPanel.innerHTML = state.quickMode ? renderQuickView(index, pillar) : renderFullView(index, pillar);
   detailPanel.classList.add("fade-in");
 
   const nextButton = document.getElementById("nextPillar");
   if (nextButton) {
     nextButton.addEventListener("click", () => {
-      state.activeIndex = nextIndex;
+      const proposed = (index + 1) % pillars.length;
+      state.activeIndex = isLocked(proposed) ? state.unlockedIndex : proposed;
       renderPillars();
       renderDetails(state.activeIndex);
     });
@@ -402,13 +446,20 @@ function renderDetails(index) {
 
   detailPanel.querySelectorAll(".decision-btn").forEach((button) => {
     button.addEventListener("click", () => {
-      state.decisions[pillar.id] = Number(button.dataset.decision);
-      setProgressUI();
+      const choice = Number(button.dataset.decision);
+      state.decisions[pillar.id] = choice;
+      if (choice === pillar.decision.recommendedIndex) {
+        clearCheckpoint(index);
+      } else {
+        guidedStatus.textContent = "Checkpoint not cleared yet. Try the aligned strategy choice.";
+        setProgressUI();
+      }
       renderDetails(index);
     });
   });
 
   renderPillars();
+  renderJourneyRail();
 }
 
 function stopGuidedReview(message) {
@@ -441,8 +492,7 @@ function startGuidedReview() {
   startGuided.classList.add("hidden");
   stopGuided.classList.remove("hidden");
 
-  const firstUnreviewed = pillars.findIndex((_, idx) => !state.reviewed.has(idx));
-  state.activeIndex = firstUnreviewed === -1 ? 0 : firstUnreviewed;
+  state.activeIndex = state.unlockedIndex;
   renderPillars();
   renderDetails(state.activeIndex);
   document.getElementById("campaignMap").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -452,7 +502,7 @@ function startGuidedReview() {
   state.guidedTimer = setInterval(() => {
     state.guidedSecondsLeft -= 1;
     if (state.guidedSecondsLeft <= 0) {
-      stopGuidedReview("Guided review complete. You can continue exploring any pillar.");
+      stopGuidedReview("Guided review complete. Continue clearing checkpoints to unlock the full brief.");
       return;
     }
     guidedStatus.textContent = `Guided mode active: ${state.guidedSecondsLeft}s remaining.`;
@@ -463,13 +513,13 @@ function startGuidedReview() {
       return;
     }
 
-    if (state.reviewed.size === pillars.length) {
-      stopGuidedReview("All pillars reviewed. Candidate brief unlocked.");
+    if (state.completed.size === pillars.length) {
+      stopGuidedReview("All checkpoints cleared. Candidate brief unlocked.");
       return;
     }
 
-    const nextUnreviewed = pillars.findIndex((_, idx) => !state.reviewed.has(idx));
-    state.activeIndex = nextUnreviewed === -1 ? (state.activeIndex + 1) % pillars.length : nextUnreviewed;
+    const nextIncomplete = pillars.findIndex((_, idx) => idx <= state.unlockedIndex && !state.completed.has(idx));
+    state.activeIndex = nextIncomplete === -1 ? state.unlockedIndex : nextIncomplete;
     renderPillars();
     renderDetails(state.activeIndex);
   }, 18000);
@@ -479,8 +529,8 @@ function toggleRecruiterMode() {
   state.quickMode = !state.quickMode;
   toggleQuickMode.textContent = state.quickMode ? "Disable 30s Recruiter Mode" : "Enable 30s Recruiter Mode";
   guidedStatus.textContent = state.quickMode
-    ? "30s Recruiter Mode enabled: showing condensed summary and role-fit view."
-    : "Guided mode is optional. You can also review pillars in any order.";
+    ? "30s Recruiter Mode enabled: showing condensed summary while preserving checkpoint decisions."
+    : "Guided mode is optional. You can also review checkpoints in any order once unlocked.";
 
   if (!detailPanel.classList.contains("hidden")) {
     renderDetails(state.activeIndex);
@@ -489,9 +539,11 @@ function toggleRecruiterMode() {
 
 startGuided.addEventListener("click", startGuidedReview);
 stopGuided.addEventListener("click", () => {
-  stopGuidedReview("Guided mode stopped. Continue reviewing pillars in any order.");
+  stopGuidedReview("Guided mode stopped. Continue clearing checkpoints at your pace.");
 });
 toggleQuickMode.addEventListener("click", toggleRecruiterMode);
 
 setProgressUI();
 renderPillars();
+renderJourneyRail();
+renderDetails(state.activeIndex);
